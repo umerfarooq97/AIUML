@@ -11,7 +11,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Get database URL from environment
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/umldb")
+DATABASE_URL = os.getenv("DATABASE_URL")
+if not DATABASE_URL:
+    # Fallback to local default if not set or empty
+    DATABASE_URL = "postgresql://postgres:postgres@localhost:5432/umldb"
 
 # Fix for Heroku/Railway style URLs
 if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
