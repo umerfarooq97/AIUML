@@ -1,0 +1,49 @@
+# Render Deployment Configuration
+# https://render.com/docs/yaml-spec
+
+services:
+  # Backend API Service
+  - type: web
+    name: ai-uml-generator-api
+    env: python
+    region: oregon
+    buildCommand: "cd backend && pip install -r requirements.txt"
+    startCommand: "cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ai-uml-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: 30
+      - key: OPENROUTER_API_KEY
+        value: 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
+      - key: OPENROUTER_MODEL
+        value: nvidia/nemotron-nano-12b-v2-vl:free
+      - key: OPENROUTER_API_URL
+        value: https://openrouter.ai/api/v1/chat/completions
+      - key: CORS_ORIGINS
+        value: https://ai-uml-generator.onrender.com
+    healthCheckPath: /health
+
+  # Frontend Static Site
+  - type: web
+    name: ai-uml-generator-frontend
+    env: static
+    region: oregon
+    buildCommand: "cd frontend && npm install && npm run build"
+    staticPublishPath: frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://ai-uml-generator-api.onrender.com
+
+# Database
+databases:
+  - name: ai-uml-db
+    databaseName: umldb
+    user: umluser
+    region: oregon
