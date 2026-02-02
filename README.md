@@ -193,19 +193,12 @@ The AI engine uses carefully crafted prompts to ensure quality UML generation fo
 
 ### Backend (.env)
 ```
-DATABASE_URL=postgresql://user:password@localhost:5432/umldb
-SECRET_KEY=your-super-secret-key-change-this-in-production
-ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=30
-OPENROUTER_API_KEY=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
-OPENROUTER_MODEL=nvidia/nemotron-nano-12b-v2-vl:free
-OPENROUTER_API_URL=https://openrouter.ai/api/v1/chat/completions
-CORS_ORIGINS=http://localhost:5173,http://localhost:3000
+
 ```
 
 ### Frontend (.env)
 ```
-VITE_API_URL=http://localhost:8000
+
 ```
 
 ## 📈 SEO Strategy
